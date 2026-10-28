@@ -1,64 +1,67 @@
 print("BURROWS WHEELER TRANSFORM")
 
-bwt_phrase = input("Inserisci la frase da trasformare: ") + "$"
+#bwt_phrase = input("Inserisci la frase da trasformare: ") + "$"
+def bwt(phrase):
 
-bwt_versions = []
+    bwt_phrase = phrase + "$"
+    bwt_versions = []
 
-for i in range(len(bwt_phrase)):
-    bwt_versions.append(bwt_phrase[i:] + bwt_phrase[:i])
+    for i in range(len(bwt_phrase)):
+        bwt_versions.append(bwt_phrase[i:] + bwt_phrase[:i])
 
-print("\nRotazioni:")
+    print("\nRotazioni:")
 
-for version in bwt_versions:
-    print(version)
-
-
-# Da rivedere (controllo oridne per il sort)
-def isInOrder(version, version2):
-    c = 0
-
-    while c < len(version):
-
-        if version[c] < version2[c]:
-            return True
-
-        elif version[c] > version2[c]:
-            return False
-
-        else:
-            c += 1
-
-    return False
+    for version in bwt_versions:
+        print(version)
 
 
-# da rivedere (sort)
-bwt_order = bwt_versions
+    # Da rivedere (controllo oridne per il sort)
+    def isInOrder(version, version2):
+        c = 0
 
-for i in range(len(bwt_order)):
+        while c < len(version):
 
-    minimo = i
+            if version[c] < version2[c]:
+                return True
 
-    for j in range(i + 1, len(bwt_order)):
+            elif version[c] > version2[c]:
+                return False
 
-        if isInOrder(bwt_order[j], bwt_order[minimo]):
-            minimo = j
+            else:
+                c += 1
 
-    tmp = bwt_order[i]
-    bwt_order[i] = bwt_order[minimo]
-    bwt_order[minimo] = tmp
-
-
-print("\nRotazioni ordinate:")
-
-for version in bwt_order:
-    print(version)
+        return False
 
 
-# Ultima colonna
-bwt_result = ""
+    # da rivedere (sort)
+    bwt_order = bwt_versions.copy()
 
-for version in bwt_order:
-    bwt_result += version[-1]
+    for i in range(len(bwt_order)):
+
+        minimo = i
+
+        for j in range(i + 1, len(bwt_order)):
+
+            if isInOrder(bwt_order[j], bwt_order[minimo]):
+                minimo = j
+
+        tmp = bwt_order[i]
+        bwt_order[i] = bwt_order[minimo]
+        bwt_order[minimo] = tmp
 
 
-print(f"\nRisultato della Burrows Wheeler Transform: {bwt_result}")
+    print("\nRotazioni ordinate:")
+
+    for version in bwt_order:
+        print(version)
+
+
+    # Ultima colonna
+    bwt_result = ""
+
+    for version in bwt_order:
+        bwt_result += version[-1]
+
+
+    # print(f"\nRisultato della Burrows Wheeler Transform: {bwt_result}")
+    return {bwt_result}
