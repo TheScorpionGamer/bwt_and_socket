@@ -13,8 +13,8 @@ for version in bwt_versions:
     print(version)
 
 
-# Confronta alfabeticamente due stringhe
-def viene_prima(version, version2):
+# Da rivedere (controllo oridne per il sort)
+def isInOrder(version, version2):
     c = 0
 
     while c < len(version):
@@ -31,7 +31,7 @@ def viene_prima(version, version2):
     return False
 
 
-# Ordinamento manuale
+# da rivedere (sort)
 bwt_order = bwt_versions
 
 for i in range(len(bwt_order)):
@@ -40,7 +40,7 @@ for i in range(len(bwt_order)):
 
     for j in range(i + 1, len(bwt_order)):
 
-        if viene_prima(bwt_order[j], bwt_order[minimo]):
+        if isInOrder(bwt_order[j], bwt_order[minimo]):
             minimo = j
 
     tmp = bwt_order[i]
