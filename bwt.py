@@ -1,6 +1,27 @@
 print("BURROWS WHEELER TRANSFORM")
 
+# Funzione per confrontare due stringhe e determinare quale viene prima in ordine lessicografico
+def isInOrder(version, version2):
+    c = 0
+
+    while c < len(version):
+
+        if version[c] < version2[c]:
+            return True
+
+        elif version[c] > version2[c]:
+            return False
+
+        else:
+            c += 1
+
+    return False
+
+
+
 #bwt_phrase = input("Inserisci la frase da trasformare: ") + "$"
+
+# funzione che importerò nel server
 def bwt(phrase):
 
     bwt_phrase = phrase + "$"
@@ -9,36 +30,17 @@ def bwt(phrase):
     for i in range(len(bwt_phrase)):
         bwt_versions.append(bwt_phrase[i:] + bwt_phrase[:i])
 
-    print("\nRotazioni:")
+    # DEBUG x Testing
+    #print("\nRotazioni:")
+    #for version in bwt_versions:
+    #    print(version)
 
-    for version in bwt_versions:
-        print(version)
-
-
-    # Da rivedere (controllo oridne per il sort)
-    def isInOrder(version, version2):
-        c = 0
-
-        while c < len(version):
-
-            if version[c] < version2[c]:
-                return True
-
-            elif version[c] > version2[c]:
-                return False
-
-            else:
-                c += 1
-
-        return False
-
-
-    # da rivedere (sort)
-    bwt_order = bwt_versions.copy()
+    # sort
+    bwt_order = bwt_versions.copy() #.copy() altrimenti puntano entrambe allo stesso punto di memoria
 
     for i in range(len(bwt_order)):
 
-        minimo = i
+        minimo = i # non lo posso chiamare min :(
 
         for j in range(i + 1, len(bwt_order)):
 
@@ -49,14 +51,11 @@ def bwt(phrase):
         bwt_order[i] = bwt_order[minimo]
         bwt_order[minimo] = tmp
 
+    # DEBUG x Testing
+    #print("\nRotazioni ordinate:")
+    #for version in bwt_order:
+    #    print(version)
 
-    print("\nRotazioni ordinate:")
-
-    for version in bwt_order:
-        print(version)
-
-
-    # Ultima colonna
     bwt_result = ""
 
     for version in bwt_order:
@@ -64,4 +63,4 @@ def bwt(phrase):
 
 
     # print(f"\nRisultato della Burrows Wheeler Transform: {bwt_result}")
-    return {bwt_result}
+    return bwt_result
