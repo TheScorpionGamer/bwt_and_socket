@@ -17,3 +17,7 @@ print("BWT - Client e Server")
 phrase = input("Inserisci la frase da trasformare con BWT\n")
 
 client_socket.sendall(phrase.encode("utf-8"))
+
+data = client_socket.recv(2048) # ricevi massimo 2048byte di informazioni
+answer = data.decode("utf-8")
+print(f"Risposta ricevuta dal server: {answer}")
