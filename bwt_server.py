@@ -12,29 +12,30 @@ exit_phrase = "you should shutdown now" # frase per chiudere il server
 #socket.listen()      # resta in attesa di richieste
 #socket.accept()      # accetta la richiesta
 
-server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-server_socket.bind((ip,port))
+#server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 
 while True:
-    server_socket.listen()
-    print(f"Server in ascolto all'IP: {ip}:{port}")
+    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as server_socket:
+        server_socket.bind((ip,port))
+        server_socket.listen(5) # 5 --> numero di client che possono mettersi in coda (quindi tot 6 client, uno che comunica con il server e 5 che aspettano)
+        print(f"Server in ascolto all'IP: {ip}:{port}")
 
-    client_socket, client_address = server_socket.accept()
-    print(f"Client trovato, Address: {client_address}")
+        client_socket, client_address = server_socket.accept()
+        print(f"Client trovato, Address: {client_address}")
 
-    data = client_socket.recv(2048) # ricevi massimo 2048byte di informazioni
-    phrase = data.decode("utf-8")
-    print(f"Frase ricevuta: {phrase}")
+        data = client_socket.recv(2048) # ricevi massimo 2048byte di informazioni
+        phrase = data.decode("utf-8")
+        print(f"Frase ricevuta: {phrase}")
 
-    if phrase.lower() == exit_phrase:
-        print("Ricevuto comando di arresto del server.")
-        client_socket.sendall("Server in fase di arresto, come richiesto.".encode("utf-8"))
-        client_socket.close()
-        break
+        if phrase.lower() == exit_phrase:
+            print("Ricevuto comando di arresto del server.")
+            client_socket.sendall("Server in fase di arresto, come richiesto.".encode("utf-8"))
+            client_socket.close()
+            break
 
-    answer = bwt(phrase)
-    print(f"Frase inviata: {answer}")
+        answer = bwt(phrase)
+        print(f"Frase inviata: {answer}")
 
-    client_socket.sendall(answer.encode("utf-8")) # invia la risposta al client
+        client_socket.sendall(answer.encode("utf-8")) # invia la risposta al client
 
-    client_socket.close() # chiudi la connessione con il client
+        #client_socket.close() # chiudi la connessione con il client, usando with diventa inutile perchè chiude automaticamente quando vede che non c'è più niente nel with
