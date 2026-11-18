@@ -85,8 +85,8 @@ anana$ │ b
 banana │ $
 na$ban │ a
 nana$b │ a
-        │
-        └──► annb$aa
+       │
+       └──► annb$aa
 ```
 
 La trasformata di Burrows-Wheeler della stringa `banana` è quindi:
